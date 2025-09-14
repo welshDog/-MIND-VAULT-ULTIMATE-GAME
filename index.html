@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mind Vault - Ultimate 3D Puzzle Experience</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="game-canvas"></div>
+        
+        <!-- Splash Screen -->
+        <div id="splash-screen">
+            <div class="splash-content">
+                <div class="logo-container">
+                    <div class="logo-text">MIND VAULT</div>
+                    <div class="logo-subtitle">Ultimate Puzzle Experience</div>
+                    <div class="particle-field"></div>
+                </div>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Menu / Theme Selection -->
+        <div id="main-menu" class="hidden">
+            <div class="menu-header">
+                <h1>SELECT YOUR ADVENTURE</h1>
+                <div class="progress-overview">
+                    <div class="crystal-count">
+                        <div class="crystal-icon">💎</div>
+                        <span id="total-crystals">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="theme-carousel">
+                <div class="theme-cards-container">
+                    <div class="theme-card" data-theme="tutorial">
+                        <div class="theme-preview">
+                            <div class="theme-icon">📚</div>
+                            <div class="theme-glow tutorial-glow"></div>
+                        </div>
+                        <div class="theme-info">
+                            <h3>Tutorial Basics</h3>
+                            <p>Learn the fundamentals</p>
+                            <div class="theme-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" data-progress="0"></div>
+                                </div>
+                                <span class="boxes-completed">0/1</span>
+                            </div>
+                        </div>
+                        <div class="unlock-status unlocked">✓</div>
+                    </div>
+                    
+                    <div class="theme-card locked" data-theme="steampunk">
+                        <div class="theme-preview">
+                            <div class="theme-icon">⚙️</div>
+                            <div class="theme-glow steampunk-glow"></div>
+                        </div>
+                        <div class="theme-info">
+                            <h3>Clockwork Gears</h3>
+                            <p>Mechanical mysteries</p>
+                            <div class="theme-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" data-progress="0"></div>
+                                </div>
+                                <span class="boxes-completed">0/5</span>
+                            </div>
+                        </div>
+                        <div class="unlock-status">🔒</div>
+                    </div>
+                    
+                    <div class="theme-card locked" data-theme="crystal">
+                        <div class="theme-preview">
+                            <div class="theme-icon">💎</div>
+                            <div class="theme-glow crystal-glow"></div>
+                        </div>
+                        <div class="theme-info">
+                            <h3>Crystal Caves</h3>
+                            <p>Prismatic puzzles</p>
+                            <div class="theme-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" data-progress="0"></div>
+                                </div>
+                                <span class="boxes-completed">0/5</span>
+                            </div>
+                        </div>
+                        <div class="unlock-status">🔒</div>
+                    </div>
+                    
+                    <div class="theme-card locked" data-theme="space">
+                        <div class="theme-preview">
+                            <div class="theme-icon">🚀</div>
+                            <div class="theme-glow space-glow"></div>
+                        </div>
+                        <div class="theme-info">
+                            <h3>Space Station</h3>
+                            <p>Futuristic challenges</p>
+                            <div class="theme-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" data-progress="0"></div>
+                                </div>
+                                <span class="boxes-completed">0/5</span>
+                            </div>
+                        </div>
+                        <div class="unlock-status">🔒</div>
+                    </div>
+                    
+                    <div class="theme-card locked" data-theme="temple">
+                        <div class="theme-preview">
+                            <div class="theme-icon">🏛️</div>
+                            <div class="theme-glow temple-glow"></div>
+                        </div>
+                        <div class="theme-info">
+                            <h3>Ancient Temple</h3>
+                            <p>Mystical secrets</p>
+                            <div class="theme-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" data-progress="0"></div>
+                                </div>
+                                <span class="boxes-completed">0/5</span>
+                            </div>
+                        </div>
+                        <div class="unlock-status">🔒</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="menu-footer">
+                <button id="achievements-btn" class="btn btn--secondary">
+                    <span class="icon">🏆</span>
+                    <span>Achievements</span>
+                </button>
+                <button id="settings-btn" class="btn btn--secondary">
+                    <span class="icon">⚙️</span>
+                    <span>Settings</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Box Preview Screen -->
+        <div id="box-preview" class="hidden">
+            <div class="preview-header">
+                <button id="back-to-menu" class="btn btn--outline">← Back</button>
+                <div class="box-info">
+                    <h2 id="current-theme-name">Theme Name</h2>
+                    <p id="current-box-number">Box 1 of 5</p>
+                </div>
+            </div>
+            
+            <div class="preview-content">
+                <div id="box-preview-canvas"></div>
+                <div class="preview-controls">
+                    <button id="start-puzzle" class="btn btn--primary">Start Challenge</button>
+                    <button id="hint-btn" class="btn btn--secondary">💡 Hint</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Game UI Overlay -->
+        <div id="game-ui" class="hidden">
+            <div class="game-header">
+                <button id="pause-btn" class="btn btn--outline">⏸️</button>
+                <div class="puzzle-indicators">
+                    <div class="puzzle-dot" data-puzzle="0">🎨</div>
+                    <div class="puzzle-dot" data-puzzle="1">🔷</div>
+                    <div class="puzzle-dot" data-puzzle="2">🔄</div>
+                    <div class="puzzle-dot" data-puzzle="3">🧩</div>
+                    <div class="puzzle-dot" data-puzzle="4">⚡</div>
+                </div>
+                <div class="timer-display">
+                    <span id="game-timer">00:00</span>
+                </div>
+            </div>
+            
+            <div class="game-controls">
+                <button id="reset-puzzle" class="btn btn--secondary">🔄 Reset</button>
+                <button id="toggle-audio" class="btn btn--secondary">🔊</button>
+            </div>
+            
+            <div class="hints-panel hidden" id="hints-panel">
+                <div class="hint-content">
+                    <div id="hint-text">Focus on the glowing elements - they hold the key!</div>
+                    <div class="hint-arrows"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Achievements Panel -->
+        <div id="achievements-panel" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>🏆 Achievements</h2>
+                    <button class="modal-close">×</button>
+                </div>
+                <div class="achievements-grid">
+                    <!-- Achievements will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⚙️ Settings</h2>
+                    <button class="modal-close">×</button>
+                </div>
+                <div class="settings-options">
+                    <div class="setting-group">
+                        <label>🎵 Audio Volume</label>
+                        <input type="range" id="volume-slider" min="0" max="100" value="75">
+                    </div>
+                    <div class="setting-group">
+                        <label>🎨 High Contrast</label>
+                        <input type="checkbox" id="contrast-toggle">
+                    </div>
+                    <div class="setting-group">
+                        <label>🏃 Animation Speed</label>
+                        <select id="animation-speed">
+                            <option value="slow">Slow</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="fast">Fast</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>📱 Haptic Feedback</label>
+                        <input type="checkbox" id="haptic-toggle" checked>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Victory Celebration -->
+        <div id="victory-celebration" class="hidden">
+            <div class="celebration-content">
+                <div class="victory-icon">🎉</div>
+                <div class="celebration-text">
+                    <h2>PUZZLE MASTERED!</h2>
+                    <div class="rewards-earned">
+                        <div class="reward-item">
+                            <span class="reward-icon">💎</span>
+                            <span class="reward-count" id="crystals-earned">+5</span>
+                        </div>
+                        <div id="achievement-notification" class="hidden">
+                            <span class="achievement-icon">🏆</span>
+                            <span class="achievement-name">Achievement Unlocked!</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="celebration-particles"></div>
+                <div class="next-actions">
+                    <button id="continue-btn" class="btn btn--primary">Continue Adventure</button>
+                    <button id="replay-btn" class="btn btn--secondary">🔄 Play Again</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Particle Systems Container -->
+        <div id="particle-systems"></div>
+        
+        <!-- Audio Context Unlock (for mobile) -->
+        <div id="audio-unlock" class="hidden">
+            <div class="audio-unlock-prompt">
+                <div class="icon">🎵</div>
+                <p>Tap to enable immersive audio</p>
+                <button id="enable-audio" class="btn btn--primary">Enable Audio</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
