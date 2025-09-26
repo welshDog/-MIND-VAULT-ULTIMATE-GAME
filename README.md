@@ -9,7 +9,9 @@
                                                                                                                   
     🧩 THE ULTIMATE 3D PUZZLE EXPERIENCE FOR NEURODIVERGENT MINDS 🧩
          Harness Your Visual-Spatial Superpowers • Zero Text Required
-```
+[💎⚡ SUPPORT THE HYPERFOCUS EMPIRE ⚡💎 – Donation & Sponsorship Portal](https://welshdog.github.io/hyperfocuszone.com-Support-Hub-/)
+
+> Join our Focus Warriors, Elite Agents, and Empire Builders to power next-gen ADHD-friendly tools!
 
 [![Live Demo](https://img.shields.io/badge/🎮_Play_Now-Live_Demo-00ff88?style=for-the-badge)](https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/94173f9c280a2d5a6a1aa0a004f71924/53428536-742f-45b9-bc8a-2835c85e9755/index.html)
 [![ADHD Friendly](https://img.shields.io/badge/🧠_ADHD-Friendly-ff6b6b?style=for-the-badge)](https://github.com)
