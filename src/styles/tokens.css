@@ -1,0 +1,76 @@
+/* MIND VAULT 2026 — design tokens
+   Dark cinematic base (OLED black), per-theme accents from v1 palettes. */
+
+:root {
+  /* Surfaces */
+  --mv-bg: #0a0a0a;
+  --mv-surface: #111111;
+  --mv-surface-1: #1a1a1a;
+  --mv-border: rgba(255, 255, 255, 0.06);
+  --mv-border-strong: rgba(255, 255, 255, 0.15);
+
+  /* Text */
+  --mv-text: #e8e8e8;
+  --mv-text-muted: #888888;
+
+  /* Reward / status */
+  --mv-gold: #f59e0b;
+  --mv-cyan: #22d3ee;
+  --mv-success: #10b981;
+  --mv-danger: #ef4444;
+
+  /* Theme accents (from v1) */
+  --mv-theme-tutorial: #4a90e2;
+  --mv-theme-steampunk: #b8860b;
+  --mv-theme-crystal: #9370db;
+  --mv-theme-space: #00ced1;
+  --mv-theme-temple: #cd853f;
+
+  /* Rarity */
+  --mv-rarity-common: #9ca3af;
+  --mv-rarity-rare: #3b82f6;
+  --mv-rarity-epic: #a855f7;
+  --mv-rarity-legendary: #f59e0b;
+
+  /* Type */
+  --mv-font-display: 'Berkeley Mono', 'JetBrains Mono', 'Cascadia Code', ui-monospace, monospace;
+  --mv-font-body: 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
+
+  /* Motion */
+  --mv-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --mv-dur-micro: 150ms;
+  --mv-dur-move: 300ms;
+  --mv-dur-enter: 500ms;
+
+  /* Spacing */
+  --mv-space-1: 4px;
+  --mv-space-2: 8px;
+  --mv-space-3: 12px;
+  --mv-space-4: 16px;
+  --mv-space-6: 24px;
+  --mv-space-8: 32px;
+  --mv-space-12: 48px;
+
+  --mv-radius: 12px;
+  --mv-radius-lg: 20px;
+
+  /* Minimum interactive target (accessibility contract) */
+  --mv-hit: 56px;
+}
+
+/* High-contrast mode — boosted separation, visible outlines */
+:root[data-contrast='high'] {
+  --mv-bg: #000000;
+  --mv-surface: #0d0d0d;
+  --mv-surface-1: #161616;
+  --mv-border: rgba(255, 255, 255, 0.35);
+  --mv-border-strong: rgba(255, 255, 255, 0.6);
+  --mv-text: #ffffff;
+  --mv-text-muted: #c0c0c0;
+}
+
+:root[data-contrast='high'] button,
+:root[data-contrast='high'] [role='button'] {
+  outline: 2px solid var(--mv-border-strong);
+  outline-offset: 2px;
+}
