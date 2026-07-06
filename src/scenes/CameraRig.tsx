@@ -27,13 +27,15 @@ export function CameraRig() {
   const reduced = useReducedMotion()
   const controls = useRef<OrbitControlsImpl>(null)
 
-  const interactive = screen === 'playing'
+  // Puzzles live on the box's front face, so the playing camera stays fixed
+  // and square-on for focus. Only the preview screen hands the camera to
+  // OrbitControls (for the auto-spin showcase).
   const autoSpin = screen === 'preview' && !reduced
 
   useFrame((state, delta) => {
     const view = VIEWS[screen]
-    // Let OrbitControls own the camera while orbiting or auto-spinning.
-    if (interactive || autoSpin) return
+    // Let OrbitControls own the camera only while auto-spinning.
+    if (autoSpin) return
 
     tmpPos.set(...view.pos)
     tmpTgt.set(...view.tgt)
@@ -53,17 +55,11 @@ export function CameraRig() {
     <OrbitControls
       ref={controls}
       makeDefault
-      enabled={interactive}
+      enabled={false}
       enablePan={false}
-      enableZoom={interactive}
-      enableDamping
-      dampingFactor={0.08}
+      enableZoom={false}
       autoRotate={autoSpin}
       autoRotateSpeed={0.8}
-      minDistance={3.5}
-      maxDistance={8}
-      minPolarAngle={Math.PI * 0.16}
-      maxPolarAngle={Math.PI * 0.5}
     />
   )
 }
