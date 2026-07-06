@@ -1,4 +1,6 @@
 import { useRef, useState } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { type Group } from 'three'
 import { useGame } from '../state/store'
 import { usePlay, type PuzzleInstance } from '../state/play'
 import { useSceneTheme } from './GameCanvas'
@@ -56,6 +58,22 @@ function ActivePuzzle({
   const solvedRef = useRef(false)
   const View = mod.View
 
+  // Entrance: scale/rise in when a puzzle mounts.
+  const g = useRef<Group>(null)
+  const born = useRef(0)
+  useFrame((_, delta) => {
+    if (!g.current) return
+    if (reduced) {
+      g.current.scale.setScalar(1)
+      g.current.position.y = 0
+      return
+    }
+    born.current = Math.min(1, born.current + delta * 3.2)
+    const e = 1 - Math.pow(1 - born.current, 3)
+    g.current.scale.setScalar(0.7 + e * 0.3)
+    g.current.position.y = (1 - e) * -0.15
+  })
+
   const handleChange = (next: unknown) => {
     setState(next)
     if (!solvedRef.current && mod.isSolved(next)) {
@@ -65,13 +83,15 @@ function ActivePuzzle({
   }
 
   return (
-    <View
-      state={state}
-      onChange={handleChange}
-      theme={theme}
-      reduced={reduced}
-      solved={solvedRef.current}
-      onMistake={onMistake}
-    />
+    <group ref={g}>
+      <View
+        state={state}
+        onChange={handleChange}
+        theme={theme}
+        reduced={reduced}
+        solved={solvedRef.current}
+        onMistake={onMistake}
+      />
+    </group>
   )
 }
