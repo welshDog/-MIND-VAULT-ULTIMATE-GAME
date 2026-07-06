@@ -4,6 +4,23 @@
 
 ---
 
+## ✅ What the 2026 rebuild ships
+
+The v2 rebuild implements these accessibility pillars, all verified end-to-end:
+
+- **Zero required reading.** Every screen, puzzle and reward communicates through icon, colour, shape, motion and sound. There is no body text anywhere in the game.
+- **One puzzle at a time.** Each vault's three puzzles are presented sequentially, never all at once, to avoid overwhelm. Three progress dots always show where you are.
+- **No on-screen timer, no failure.** A hidden timer only awards bonus crystals; it is never shown, so there's no time pressure. Wrong moves are always harmless — pieces nudge back, sequences replay, traces crumble gently — with unlimited retries.
+- **Reduced motion** (⚙️ settings, tri-state auto / on / off). "Auto" follows the OS `prefers-reduced-motion` setting. When active it removes camera drift, idle box spin, ambient particles, confetti and entrance springs, replacing them with instant states / fades. Read through a single source of truth so the in-game override always wins.
+- **High contrast** (⚙️ settings). Brightens the 3D scene, extends fog range, and adds bolder UI borders/outlines.
+- **Haptics** (⚙️ settings) on every interaction and win, gated by the toggle.
+- **Large touch targets** — all interactive controls are at least 56 px.
+- **Reward moments** — every solved puzzle locks in with light + sound, and every completed vault bursts open with confetti, a crystal payout and a victory stinger.
+
+All four settings persist immediately to `localStorage`.
+
+---
+
 ## 🎯 **Core Accessibility Philosophy**
 
 ### **Neurodivergent Strengths-First Design**
