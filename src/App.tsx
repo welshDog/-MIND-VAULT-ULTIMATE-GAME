@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
 import { useGame } from './state/store'
-import { THEMES } from './themes'
 import { audio } from './audio/engine'
+import { GameCanvas } from './scenes/GameCanvas'
 import { Splash } from './screens/Splash'
 import { WorldSelect } from './screens/WorldSelect'
 import { BoxPreview } from './screens/BoxPreview'
@@ -11,7 +11,6 @@ import { VictoryOverlay } from './screens/VictoryOverlay'
 
 export default function App() {
   const screen = useGame((s) => s.screen)
-  const focusedTheme = useGame((s) => s.focusedTheme)
   const highContrast = useGame((s) => s.settings.highContrast)
   const volume = useGame((s) => s.settings.volume)
 
@@ -23,19 +22,10 @@ export default function App() {
     audio.setVolume(volume)
   }, [volume])
 
-  const accent = THEMES[focusedTheme].accent
-
   return (
     <div style={{ position: 'fixed', inset: 0, overflow: 'hidden' }}>
-      {/* Placeholder atmospheric background — replaced by the 3D canvas in P2 */}
-      <motion.div
-        aria-hidden
-        animate={{
-          background: `radial-gradient(120% 90% at 50% 30%, ${accent}22, var(--mv-bg) 55%)`,
-        }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        style={{ position: 'absolute', inset: 0 }}
-      />
+      {/* Persistent 3D scene behind every screen */}
+      <GameCanvas />
 
       <AnimatePresence mode="wait">
         {screen === 'splash' && <Splash key="splash" />}
