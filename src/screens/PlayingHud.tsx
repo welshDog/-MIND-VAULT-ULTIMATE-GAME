@@ -6,6 +6,7 @@ import { THEMES } from '../themes'
 import { IconButton } from '../ui/IconButton'
 import { ProgressPips } from '../ui/ProgressPips'
 import { useReducedMotion } from '../hooks/useReducedMotion'
+import { runAchievements } from '../achievements/engine'
 
 export function PlayingHud() {
   const themeId = useGame((s) => s.currentTheme)
@@ -21,20 +22,26 @@ export function PlayingHud() {
   const solvedCount = solved.filter(Boolean).length
 
   // Fire victory once, after the last puzzle solves (brief beat to celebrate).
+  // `fired` is set INSIDE the timeout (not in the effect body) so a spurious
+  // effect re-run reschedules the win instead of clearing it and blocking it.
   const fired = useRef(false)
+  const allSolved = puzzles.length > 0 && solved.length > 0 && solved.every(Boolean)
   useEffect(() => {
-    if (fired.current) return
-    if (puzzles.length > 0 && solved.length > 0 && solved.every(Boolean)) {
+    if (fired.current || !allSolved) return
+    const { startTime, mistakes, puzzles: pz } = usePlay.getState()
+    const timeSec = (performance.now() - startTime) / 1000
+    const t = setTimeout(() => {
+      if (fired.current) return
       fired.current = true
-      const { startTime, mistakes } = usePlay.getState()
-      const timeSec = (performance.now() - startTime) / 1000
-      const t = setTimeout(() => {
-        completeBox(timeSec, mistakes === 0)
-        goto('victory')
-      }, 750)
-      return () => clearTimeout(t)
-    }
-  }, [solved, puzzles, completeBox, goto])
+      const result = completeBox(timeSec, mistakes === 0)
+      runAchievements(
+        result,
+        pz.map((p) => p.id),
+      )
+      goto('victory')
+    }, 750)
+    return () => clearTimeout(t)
+  }, [allSolved, completeBox, goto])
 
   return (
     <motion.div

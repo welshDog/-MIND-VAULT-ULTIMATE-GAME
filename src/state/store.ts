@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import type { ThemeId } from '../themes/types'
 import { THEMES, THEME_ORDER, nextTheme } from '../themes'
-import { ACHIEVEMENTS, type AchievementId } from '../achievements/definitions'
+import { ACHIEVEMENTS, ACHIEVEMENT_MAP, type AchievementId } from '../achievements/definitions'
 import { migrateLegacy } from '../save/migrateLegacy'
 
 export type Screen = 'splash' | 'menu' | 'preview' | 'playing' | 'victory'
@@ -59,6 +59,7 @@ interface GameState {
   enterTheme: (id: ThemeId, boxIndex: number) => void
   completeBox: (timeSec: number, perfect: boolean) => VictoryResult
   bumpAchievement: (id: AchievementId, to: number) => void
+  unlockAchievement: (id: AchievementId) => boolean
   showToast: (id: AchievementId) => void
   clearToast: () => void
   setSettings: (patch: Partial<Settings>) => void
@@ -156,11 +157,25 @@ export const useGame = create<GameState>()(
       bumpAchievement: (id, to) =>
         set((state) => {
           const cur = state.achievements[id]
-          if (cur.unlocked && to <= cur.progress) return state
+          if (cur.progress >= to) return state
           return {
             achievements: { ...state.achievements, [id]: { ...cur, progress: to } },
           }
         }),
+
+      unlockAchievement: (id) => {
+        const cur = get().achievements[id]
+        if (cur.unlocked) return false
+        const max = ACHIEVEMENT_MAP[id].maxProgress
+        set((state) => ({
+          achievements: {
+            ...state.achievements,
+            [id]: { unlocked: true, progress: max },
+          },
+          toast: { id, key: ++toastKey },
+        }))
+        return true
+      },
 
       showToast: (id) => set({ toast: { id, key: ++toastKey } }),
       clearToast: () => set({ toast: null }),

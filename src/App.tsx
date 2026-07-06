@@ -8,9 +8,13 @@ import { WorldSelect } from './screens/WorldSelect'
 import { BoxPreview } from './screens/BoxPreview'
 import { PlayingHud } from './screens/PlayingHud'
 import { VictoryOverlay } from './screens/VictoryOverlay'
+import { AchievementsPanel } from './screens/AchievementsPanel'
+import { SettingsModal } from './screens/SettingsModal'
+import { Toast } from './ui/Toast'
 
 export default function App() {
   const screen = useGame((s) => s.screen)
+  const overlay = useGame((s) => s.overlay)
   const highContrast = useGame((s) => s.settings.highContrast)
   const volume = useGame((s) => s.settings.volume)
 
@@ -34,6 +38,13 @@ export default function App() {
         {screen === 'playing' && <PlayingHud key="playing" />}
         {screen === 'victory' && <VictoryOverlay key="victory" />}
       </AnimatePresence>
+
+      <AnimatePresence>
+        {overlay === 'achievements' && <AchievementsPanel key="ach" />}
+        {overlay === 'settings' && <SettingsModal key="set" />}
+      </AnimatePresence>
+
+      <Toast />
     </div>
   )
 }
