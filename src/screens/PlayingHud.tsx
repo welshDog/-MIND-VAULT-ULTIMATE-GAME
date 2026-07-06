@@ -12,6 +12,7 @@ export function PlayingHud() {
   const themeId = useGame((s) => s.currentTheme)
   const completeBox = useGame((s) => s.completeBox)
   const goto = useGame((s) => s.goto)
+  const recenterCamera = useGame((s) => s.recenterCamera)
   const reduced = useReducedMotion()
 
   const puzzles = usePlay((s) => s.puzzles)
@@ -69,7 +70,7 @@ export function PlayingHud() {
           </IconButton>
         </span>
         <span style={{ pointerEvents: 'auto' }}>
-          <IconButton label="Hint" onClick={() => {}}>
+          <IconButton label="Recenter view" onClick={recenterCamera}>
             👁
           </IconButton>
         </span>

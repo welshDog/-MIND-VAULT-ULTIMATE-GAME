@@ -51,9 +51,11 @@ interface GameState {
   focusedTheme: ThemeId // hovered card in menu, drives background scene
   lastVictory: VictoryResult | null
   toast: { id: AchievementId; key: number } | null
+  recenterToken: number // bumps to re-frame the play camera square-on (👁 button)
 
   // ---- actions ----
   goto: (screen: Screen) => void
+  recenterCamera: () => void
   setOverlay: (o: Overlay) => void
   focusTheme: (id: ThemeId) => void
   enterTheme: (id: ThemeId, boxIndex: number) => void
@@ -108,8 +110,10 @@ export const useGame = create<GameState>()(
       focusedTheme: 'tutorial',
       lastVictory: null,
       toast: null,
+      recenterToken: 0,
 
       goto: (screen) => set({ screen }),
+      recenterCamera: () => set((s) => ({ recenterToken: s.recenterToken + 1 })),
       setOverlay: (overlay) => set({ overlay }),
       focusTheme: (focusedTheme) => set({ focusedTheme }),
 
