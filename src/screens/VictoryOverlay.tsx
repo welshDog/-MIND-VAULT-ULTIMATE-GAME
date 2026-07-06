@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { motion } from 'motion/react'
 import { useGame } from '../state/store'
+import { usePlay } from '../state/play'
 import { THEMES } from '../themes'
 import { IconButton } from '../ui/IconButton'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -13,10 +14,21 @@ export function VictoryOverlay() {
   const boxIndex = useGame((s) => s.currentBoxIndex)
   const enterTheme = useGame((s) => s.enterTheme)
   const goto = useGame((s) => s.goto)
+  const beginBox = usePlay((s) => s.beginBox)
   const reduced = useReducedMotion()
   const haptic = useHaptics()
 
   const theme = THEMES[themeId]
+
+  const replay = () => {
+    beginBox(themeId, boxIndex)
+    goto('playing')
+  }
+  const nextBox = () => {
+    enterTheme(themeId, boxIndex + 1)
+    beginBox(themeId, boxIndex + 1)
+    goto('playing')
+  }
 
   useEffect(() => {
     audio.victoryStinger(theme.sound)
@@ -104,20 +116,11 @@ export function VictoryOverlay() {
         )}
 
         <div style={{ display: 'flex', gap: 16, marginTop: 12 }}>
-          <IconButton label="Replay box" onClick={() => goto('playing')}>
+          <IconButton label="Replay box" onClick={replay}>
             ↺
           </IconButton>
           {hasNext && (
-            <IconButton
-              label="Next box"
-              variant="primary"
-              accent={theme.accent}
-              size={72}
-              onClick={() => {
-                enterTheme(themeId, boxIndex + 1)
-                goto('playing')
-              }}
-            >
+            <IconButton label="Next box" variant="primary" accent={theme.accent} size={72} onClick={nextBox}>
               →
             </IconButton>
           )}

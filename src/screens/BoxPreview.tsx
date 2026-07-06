@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import { useGame } from '../state/store'
+import { usePlay } from '../state/play'
 import { THEMES } from '../themes'
 import { IconButton } from '../ui/IconButton'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -10,7 +11,13 @@ export function BoxPreview() {
   const completed = useGame((s) => s.themes[themeId].completed)
   const enterTheme = useGame((s) => s.enterTheme)
   const goto = useGame((s) => s.goto)
+  const beginBox = usePlay((s) => s.beginBox)
   const reduced = useReducedMotion()
+
+  const play = () => {
+    beginBox(themeId, boxIndex)
+    goto('playing')
+  }
 
   const theme = THEMES[themeId]
   const maxUnlocked = Math.min(completed, theme.boxes - 1) // highest playable
@@ -77,7 +84,7 @@ export function BoxPreview() {
             variant="primary"
             accent={theme.accent}
             size={88}
-            onClick={() => goto('playing')}
+            onClick={play}
           >
             ▶
           </IconButton>

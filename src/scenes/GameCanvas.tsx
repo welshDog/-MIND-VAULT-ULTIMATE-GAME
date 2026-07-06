@@ -9,6 +9,7 @@ import { ThemeEnvironment } from './ThemeEnvironment'
 import { VaultBox } from './VaultBox'
 import { AmbientParticles } from './AmbientParticles'
 import { Effects } from './Effects'
+import { PuzzleStage } from './PuzzleStage'
 
 /** Resolve which theme drives the scene: hovered card in the menu, else the active run. */
 export function useSceneTheme() {
@@ -51,6 +52,7 @@ function SceneContents() {
       <CameraRig />
       <ThemeEnvironment theme={theme} />
       <VaultBox theme={theme} />
+      <PuzzleStage />
       <AmbientParticles theme={theme} />
       <Effects />
     </>

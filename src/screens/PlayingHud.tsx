@@ -1,49 +1,40 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { motion } from 'motion/react'
 import { useGame } from '../state/store'
+import { usePlay } from '../state/play'
 import { THEMES } from '../themes'
 import { IconButton } from '../ui/IconButton'
 import { ProgressPips } from '../ui/ProgressPips'
 import { useReducedMotion } from '../hooks/useReducedMotion'
-import { useHaptics } from '../hooks/useHaptics'
-import { audio } from '../audio/engine'
-
-const PUZZLES_PER_BOX = 3
 
 export function PlayingHud() {
   const themeId = useGame((s) => s.currentTheme)
   const completeBox = useGame((s) => s.completeBox)
   const goto = useGame((s) => s.goto)
   const reduced = useReducedMotion()
-  const haptic = useHaptics()
 
+  const puzzles = usePlay((s) => s.puzzles)
+  const solved = usePlay((s) => s.solved)
   const theme = THEMES[themeId]
-  const [solved, setSolved] = useState(0)
-  const startRef = useRef(performance.now())
-  const mistakes = useRef(0)
 
-  // Reset session whenever a new box begins.
+  const total = puzzles.length || 3
+  const solvedCount = solved.filter(Boolean).length
+
+  // Fire victory once, after the last puzzle solves (brief beat to celebrate).
+  const fired = useRef(false)
   useEffect(() => {
-    setSolved(0)
-    startRef.current = performance.now()
-    mistakes.current = 0
-  }, [themeId])
-
-  // TEMPORARY (P1): advance one puzzle per tap on the stage.
-  // P3 replaces this with real puzzle solve callbacks.
-  const solveNext = () => {
-    const next = Math.min(PUZZLES_PER_BOX, solved + 1)
-    audio.success(theme.sound)
-    haptic('success')
-    setSolved(next)
-    if (next >= PUZZLES_PER_BOX) {
-      const timeSec = (performance.now() - startRef.current) / 1000
-      setTimeout(() => {
-        completeBox(timeSec, mistakes.current === 0)
+    if (fired.current) return
+    if (puzzles.length > 0 && solved.length > 0 && solved.every(Boolean)) {
+      fired.current = true
+      const { startTime, mistakes } = usePlay.getState()
+      const timeSec = (performance.now() - startTime) / 1000
+      const t = setTimeout(() => {
+        completeBox(timeSec, mistakes === 0)
         goto('victory')
-      }, 500)
+      }, 750)
+      return () => clearTimeout(t)
     }
-  }
+  }, [solved, puzzles, completeBox, goto])
 
   return (
     <motion.div
@@ -51,7 +42,7 @@ export function PlayingHud() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: reduced ? 0.15 : 0.4 }}
-      style={{ position: 'absolute', inset: 0 }}
+      style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
     >
       {/* Top HUD */}
       <div
@@ -65,43 +56,17 @@ export function PlayingHud() {
           padding: '0 20px',
         }}
       >
-        <IconButton label="Leave puzzle" onClick={() => goto('preview')}>
-          ←
-        </IconButton>
-        <IconButton label="Hint" onClick={() => haptic('tick')}>
-          👁
-        </IconButton>
+        <span style={{ pointerEvents: 'auto' }}>
+          <IconButton label="Leave puzzle" onClick={() => goto('preview')}>
+            ←
+          </IconButton>
+        </span>
+        <span style={{ pointerEvents: 'auto' }}>
+          <IconButton label="Hint" onClick={() => {}}>
+            👁
+          </IconButton>
+        </span>
       </div>
-
-      {/* Temporary interactive stage placeholder (P1) */}
-      <button
-        aria-label="Solve puzzle"
-        onClick={solveNext}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          display: 'grid',
-          placeItems: 'center',
-          cursor: 'pointer',
-        }}
-      >
-        <div
-          style={{
-            width: 180,
-            height: 180,
-            borderRadius: 24,
-            background: `linear-gradient(160deg, ${theme.accent}33, var(--mv-surface))`,
-            border: `1px solid ${theme.accent}66`,
-            boxShadow: `0 0 60px -20px ${theme.accent}`,
-            display: 'grid',
-            placeItems: 'center',
-            fontSize: 72,
-            filter: `drop-shadow(0 0 20px ${theme.accent})`,
-          }}
-        >
-          {theme.icon}
-        </div>
-      </button>
 
       {/* Bottom progress pips */}
       <div
@@ -114,7 +79,7 @@ export function PlayingHud() {
           justifyContent: 'center',
         }}
       >
-        <ProgressPips total={PUZZLES_PER_BOX} filled={solved} accent={theme.accent} size={14} />
+        <ProgressPips total={total} filled={solvedCount} accent={theme.accent} size={14} />
       </div>
     </motion.div>
   )

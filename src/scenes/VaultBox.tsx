@@ -19,10 +19,17 @@ export function VaultBox({ theme }: { theme: ThemeDef }) {
   const open = useRef(0)
 
   useFrame((_, delta) => {
-    // Idle spin only while the box is a background element.
+    // Idle spin while the box is a background element; otherwise ease the
+    // front face square to the camera (so puzzles sit flat against it).
     if (root.current) {
       const idle = (screen === 'menu' || screen === 'splash') && !reduced
-      if (idle) root.current.rotation.y += delta * 0.25
+      if (idle) {
+        root.current.rotation.y += delta * 0.25
+      } else {
+        const cur = root.current.rotation.y
+        const diff = ((-cur + Math.PI) % (Math.PI * 2)) - Math.PI
+        root.current.rotation.y = reduced ? 0 : cur + diff * (1 - Math.pow(0.002, delta))
+      }
     }
 
     // Lid open state follows victory.
