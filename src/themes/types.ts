@@ -10,6 +10,7 @@ export type PuzzleId =
   | 'glyph-pattern'
   | 'matrix-completion'
   | 'orbit-cipher'
+  | 'chrono-lock'
 
 export interface ThemeSound {
   waveform: OscillatorType

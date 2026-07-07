@@ -14,7 +14,7 @@ const THEME_LIST: ThemeDef[] = [
     accent: '#A855F7',
     palette: ['#A855F7', '#00D4FF', '#10F5A0', '#FCD34D', '#D946EF'],
     boxes: 1,
-    puzzleSet: ['orbit-cipher', 'matrix-completion', 'spatial-rotation'],
+    puzzleSet: ['matrix-completion', 'chrono-lock', 'orbit-cipher'],
     sound: { waveform: 'sine', scale: [261.63, 293.66, 329.63, 392.0, 440.0, 523.25], filterHz: Infinity },
     env: {
       fogColor: '#0a0e1a',
