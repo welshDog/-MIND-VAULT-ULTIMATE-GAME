@@ -8,6 +8,7 @@ export type PuzzleId =
   | 'light-refraction'
   | 'holo-sequence'
   | 'glyph-pattern'
+  | 'matrix-completion'
 
 export interface ThemeSound {
   waveform: OscillatorType
