@@ -1,39 +1,48 @@
 /* MIND VAULT 2026 — design tokens
-   Dark cinematic base (OLED black), per-theme accents from v1 palettes. */
+   Themed to the HyperFocus Zone course palette (space-black base +
+   violet/cyan brand). NO ORANGE — HFZ sacred brand rule. Gold is reserved
+   for rewards/wins only. Per-world accents live in src/themes. */
 
 :root {
-  /* Surfaces */
-  --mv-bg: #0a0a0a;
-  --mv-surface: #111111;
-  --mv-surface-1: #1a1a1a;
-  --mv-border: rgba(255, 255, 255, 0.06);
-  --mv-border-strong: rgba(255, 255, 255, 0.15);
+  /* Surfaces — HFZ dark brand */
+  --mv-bg: #0a0e1a;          /* space-black */
+  --mv-surface: #0f1b35;     /* midnight */
+  --mv-surface-1: #1a0a2e;   /* deep-violet — elevated / modals */
+  --mv-border: rgba(168, 85, 247, 0.18);
+  --mv-border-strong: rgba(168, 85, 247, 0.38);
 
   /* Text */
-  --mv-text: #e8e8e8;
-  --mv-text-muted: #888888;
+  --mv-text: #f0f4ff;
+  --mv-text-muted: #8b9cc8;
 
-  /* Reward / status */
+  /* Brand accents */
+  --mv-violet: #7b2fbe;
+  --mv-violet-light: #a855f7;
+  --mv-cyan: #00d4ff;
+  --mv-cyan-pure: #00ffff;
+  --mv-pink: #d946ef;
+  --mv-mint: #10f5a0;
+
+  /* Reward / status (gold = rewards & wins only) */
   --mv-gold: #f59e0b;
-  --mv-cyan: #22d3ee;
-  --mv-success: #10b981;
+  --mv-gold-light: #fcd34d;
+  --mv-success: #10f5a0;
   --mv-danger: #ef4444;
 
-  /* Theme accents (from v1) */
-  --mv-theme-tutorial: #4a90e2;
-  --mv-theme-steampunk: #b8860b;
-  --mv-theme-crystal: #9370db;
-  --mv-theme-space: #00ced1;
-  --mv-theme-temple: #cd853f;
+  /* Signature gradient + brand glows */
+  --mv-gradient-cta: linear-gradient(135deg, #7b2fbe 0%, #00d4ff 100%);
+  --mv-glow-violet: 0 0 20px rgba(168, 85, 247, 0.45), 0 0 40px rgba(168, 85, 247, 0.2);
+  --mv-glow-cyan: 0 0 20px rgba(0, 212, 255, 0.45), 0 0 40px rgba(0, 212, 255, 0.2);
+  --mv-glow-gold: 0 0 20px rgba(245, 158, 11, 0.45), 0 0 40px rgba(245, 158, 11, 0.2);
 
-  /* Rarity */
-  --mv-rarity-common: #9ca3af;
-  --mv-rarity-rare: #3b82f6;
-  --mv-rarity-epic: #a855f7;
-  --mv-rarity-legendary: #f59e0b;
+  /* Rarity — HFZ */
+  --mv-rarity-common: #60a5fa;
+  --mv-rarity-rare: #a855f7;
+  --mv-rarity-epic: #d946ef;
+  --mv-rarity-legendary: #fcd34d;
 
-  /* Type */
-  --mv-font-display: 'Berkeley Mono', 'JetBrains Mono', 'Cascadia Code', ui-monospace, monospace;
+  /* Type — matches the course (Space Grotesk display + Inter body) */
+  --mv-font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   --mv-font-body: 'Inter', -apple-system, 'Segoe UI', system-ui, sans-serif;
 
   /* Motion */
@@ -61,12 +70,12 @@
 /* High-contrast mode — boosted separation, visible outlines */
 :root[data-contrast='high'] {
   --mv-bg: #000000;
-  --mv-surface: #0d0d0d;
-  --mv-surface-1: #161616;
+  --mv-surface: #0a0e1a;
+  --mv-surface-1: #14183a;
   --mv-border: rgba(255, 255, 255, 0.35);
   --mv-border-strong: rgba(255, 255, 255, 0.6);
   --mv-text: #ffffff;
-  --mv-text-muted: #c0c0c0;
+  --mv-text-muted: #c9d4f0;
 }
 
 :root[data-contrast='high'] button,
