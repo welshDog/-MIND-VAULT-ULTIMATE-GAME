@@ -9,6 +9,7 @@ import { lightRefraction } from './light-refraction'
 import { holoSequence } from './holo-sequence'
 import { glyphPattern } from './glyph-pattern'
 import { matrixCompletion } from './matrix-completion'
+import { orbitCipher } from './orbit-cipher'
 
 // Heterogeneous plugin map — each module owns its own state type, so `any`
 // is the pragmatic boundary here (state is opaque to the registry/stage).
@@ -21,6 +22,7 @@ const REGISTRY: Partial<Record<PuzzleId, PuzzleModule<any>>> = {
   'holo-sequence': holoSequence,
   'glyph-pattern': glyphPattern,
   'matrix-completion': matrixCompletion,
+  'orbit-cipher': orbitCipher,
 }
 
 export function getModule(id: PuzzleId): PuzzleModule<any> {

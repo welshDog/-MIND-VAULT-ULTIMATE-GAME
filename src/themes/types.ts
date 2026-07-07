@@ -9,6 +9,7 @@ export type PuzzleId =
   | 'holo-sequence'
   | 'glyph-pattern'
   | 'matrix-completion'
+  | 'orbit-cipher'
 
 export interface ThemeSound {
   waveform: OscillatorType
