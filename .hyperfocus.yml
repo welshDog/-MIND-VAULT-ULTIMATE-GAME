@@ -1,0 +1,12 @@
+# HyperFocus Z0ne repo manifest - read by scripts/gen_repo_map.py
+# Edit this file, then re-run the generator. Never hand-edit the map.
+
+name: "-MIND-VAULT-ULTIMATE-GAME"
+emoji: "🧩"
+tagline: "3D zero-text puzzle game — 5 worlds / 7 mechanics"
+category: "games"
+stack: "Vite + React Three Fiber"
+first_doc: "README.md"
+tier: "LIVE"
+url: "https://mind-vault-hazel.vercel.app"
+notes: "branch rebuild/2026 — quote the leading-dash path in shells"
